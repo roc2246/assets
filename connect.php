@@ -4,7 +4,7 @@ if ($_SERVER['HTTP_HOST'] == 'localhost'){
   $username = 'root';
   $password = 'root';
   $database = 'ecommerce';
-} else if ($_SERVER['HTTP_HOST'] == 'roc09090.classweb.ccv'){
+} else if ($_SERVER['HTTP_HOST'] == 'roc09090.classweb.ccv.edu'){
   $servername = 'localhost';
   $username = 'roc09090';
   $password = 'je5umyju5';
