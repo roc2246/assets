@@ -1,9 +1,7 @@
 <?php
-//For debugging purposes
-//echo sys_get_temp_dir() . "<br><br>";
 
 function uploadImage(){
-  $target_dir = "uploads/";
+  $target_dir = "uploads/";//create 'uploads' folder
   $target_file = $target_dir . basename($_FILES["image"]["name"]);
   $uploadOk = 1;
   $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -56,32 +54,29 @@ function invenProd(){
     if(isset($_POST['submit'])) {
     global $connection;
         
-    $brand = $_POST['brand'];
-    $model = $_POST['model'];
-    $size = $_POST['size'];
-    $price = $_POST['price'];
+    //Insert variables here (based off of textbox neames)
     $image = $_FILES["image"]["name"];
 
-    $query = "INSERT INTO inventory(brand,model,price,size, image) VALUES ('$brand', '$model','$price', '$size', '$image')";
+    $query = "INSERT INTO inventory(/*database columns */) VALUES (/*Form values */)";
     $result = mysqli_query($connection, $query);
-
-      if($brand == '') {
+/*
+      if( == '') {
           echo "<p class='upload-fail'>please enter a brand name</p>";
           
         } 
-        if($model == '') {
+        if(== '') {
           
           echo "<p class='upload-fail'>please enter a model name</p>";
         }
-        if($size == '') {
+        if(== '') {
           
           echo "<p class='upload-fail'>please enter a size</p>";
         } 
-        if($price == '') {
+        if( == '') {
           
           echo "<p class='upload-fail'>please enter a price</p>";
         } 
-     
+    */ 
         if(!$result) {
             die('Query FAILED: ' . mysqli_error($connection));
         } else {
@@ -232,13 +227,9 @@ function showAllData() {
   echo "<option>Select Inventory Item:</option>";
 
   while($row = mysqli_fetch_assoc($result)) {
-     $id = $row['prodID'];
-     $brand = $row['brand'];
-     $model = $row['model'];
-     $size = $row['size'];
-     $price = $row['price'];
+     //Variables based offf of table columns will go here
 
-  echo "<option name = '$id' value='$id'>$id - $brand - $model - $size - $price</option>";
+  //echo "<option name = '$id' value='$id'>$id - $brand - $model - $size - $price</option>";
   }
 } 
   
@@ -260,13 +251,13 @@ function deleteRows() {
   function updateProduct() {
     if(isset($_POST['submit'])) {  
       global $connection;
-      $id = $_POST['ID'];
-      $brand = $_POST['brand'];
-      $model = $_POST['model'];
-      $size = $_POST['size'];
-      $price = $_POST['price'];
+           //Variables based offf of table columns will go here
+
       $image = $_FILES["image"]["name"];
-    
+      //Delete once function is in use
+      $query="";
+      $id="";
+    /*
       $query = "UPDATE inventory SET ";
       $query .= "brand = '$brand', ";
       $query .= "model = '$model', ";
@@ -278,7 +269,7 @@ function deleteRows() {
         $query .= "image = '$image' ";
       }
       $query .= "WHERE prodID = '$id'";
-
+*/
       $result = mysqli_query($connection, $query);
         if(!$result) {
           die("QUERY FAILED" . mysqli_error($connection)); 
