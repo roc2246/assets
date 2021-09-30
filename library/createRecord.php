@@ -3,7 +3,9 @@
 function checkAvailable($table, $loginPage, $col1, $col2){
   if (empty($_POST[$col1]) && isset($_POST['submit'])
   || empty($_POST[$col2]) && isset($_POST['submit'])){
+    
     echo "<h4>Please enter a username and password!</h4>";
+
   }else if(isset($_POST['submit']) && !empty($_POST)) {
     global $connection;
 
