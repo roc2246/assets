@@ -10,7 +10,7 @@ function getapi($table){
             $response = array();
              $columns =  array_keys($row);
             for($i = 0; $i<count($row); $i++){
-                array_push($response, $row[$columns[$i]]);
+                $response[$columns[$i]] = $row[$columns[$i]];
             }
         }
         echo json_encode($response, JSON_PRETTY_PRINT); 
