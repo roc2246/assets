@@ -12,9 +12,9 @@ function getapi($table){
             for($i = 0; $i<count($row); $i++){
                 $response[$columns[$i]] = $row[$columns[$i]];
             }
+        echo json_encode($response, JSON_PRETTY_PRINT) . "<br>"; 
         }
-        echo json_encode($response, JSON_PRETTY_PRINT); 
-    }
+  }
 }
 
 ?>
