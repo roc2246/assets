@@ -3,19 +3,18 @@
 function getapi($table){
     global $connection;
     $sql = "SELECT * FROM $table";
-    $response = array();
     $result = mysqli_query($connection, $sql);
-    if($result){
+      if($result){
         header("Content");
-        $i = -1;
         while($row = mysqli_fetch_assoc($result)){
-            $i++;
-        
-        array_push($response, $row['id'], $row['image'], $row['adress'], $row['price']);
-        //Insert more columns here
+            $response = array();
+             $columns =  array_keys($row);
+            for($i = 0; $i<count($row); $i++){
+                array_push($response, $row[$columns[$i]]);
+            }
         }
-        echo json_encode($response, JSON_PRETTY_PRINT);
-    } 
+        echo json_encode($response, JSON_PRETTY_PRINT); 
+    }
 }
 
 ?>
