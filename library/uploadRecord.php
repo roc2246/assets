@@ -1,6 +1,6 @@
 <?php 
 
-function invenProd(){
+function uploadRecord(){
     if(isset($_POST['submit'])) {
     global $connection;
         

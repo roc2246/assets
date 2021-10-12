@@ -14,11 +14,6 @@ function uploadImage(){
       $uploadOk = 1;
     } else {
       echo "File is not an image.<br><br>";
-  
-      /*
-      FOR DEBUGGING PURPOSES:
-      print_r($_FILES);
-      echo $_FILES["image"]["tmp_name"];*/
       $uploadOk = 0;
   
       }
