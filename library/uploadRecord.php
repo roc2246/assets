@@ -1,38 +1,65 @@
 <?php 
 
-function uploadRecord(){
-    if(isset($_POST['submit'])) {
-    global $connection;
+function uploadRecord($table){
+  if(isset($_POST['submit'])) {
+  global $connection;
         
-    //Insert variables here (based off of textbox neames)
-    $image = $_FILES["image"]["name"];
-
-    $query = "INSERT INTO inventory(/*database columns */) VALUES (/*Form values */)";
-    $result = mysqli_query($connection, $query);
-/*
-      if( == '') {
-          echo "<p class='upload-fail'>please enter a brand name</p>";
-          
-        } 
-        if(== '') {
-          
-          echo "<p class='upload-fail'>please enter a model name</p>";
+  //For use in query
+  function getFieldNames($table){
+    global $connection;
+    $sql = "SELECT * FROM $table";
+    $result = mysqli_query($connection, $sql);
+    $row = mysqli_fetch_assoc($result);
+    if(count($row) >= 0){
+      $query = "SHOW COLUMNS FROM $table";
+      $res2 = mysqli_query($connection, $query);
+      $fieldNames = array();
+      while($row = mysqli_fetch_assoc($res2)){
+        if ($row['Field'] == 'id'){
+          continue;
+        }else{
+          array_push($fieldNames, $row['Field']);
         }
-        if(== '') {
-          
-          echo "<p class='upload-fail'>please enter a size</p>";
-        } 
-        if( == '') {
-          
-          echo "<p class='upload-fail'>please enter a price</p>";
-        } 
-    */ 
-        if(!$result) {
-            die('Query FAILED: ' . mysqli_error($connection));
-        } else {
-            echo "<p class='upload-success'>Item successfully added to inventory.</p>";
+    }
+    return implode(",", $fieldNames);
+  }
+}
+
+  //For use in query
+  function getFieldValues($table){
+    global $connection;
+    $sql = "SELECT * FROM $table";
+    $result = mysqli_query($connection, $sql);
+    $row = mysqli_fetch_assoc($result);
+    if(count($row) >= 0){
+      $query = "SHOW COLUMNS FROM $table";
+      $res2 = mysqli_query($connection, $query);
+      $values = array();
+      $fieldNames = explode(",",getFieldNames($table));
+      while($row = mysqli_fetch_assoc($res2)){
+       if ($row['Field'] == 'image'){
+            array_push($values, $_FILES["image"]["name"]);
           }
         }
+    }
+    for($i=0; $i<count($fieldNames); $i++){
+      if($fieldNames[$i]=='image'){
+        continue;
+      }else{
+      array_push($values, $_POST[$fieldNames[$i]]);
       }
+    }
+    $values = implode("','", $values);
+    return $values;
+  }
 
+  $query = "INSERT INTO listings(".getFieldNames($table).") VALUES ('".getFieldValues($table)."')";
+  if (mysqli_query($connection, $query)) {
+    echo "New record created successfully";
+  } else {
+    echo "Error: " . $query . "<br><br>" . mysqli_error($connection)."<br><br>";
+
+  }
+}
+}
 ?>
