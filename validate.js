@@ -1,32 +1,41 @@
-    //////////Variables///////////////////////////////////////////
+/////////////////Sets up the arrays with regex and textfields
+var inputs = [];
+var regex = [];
 
-//Stores the form and its textboxes
-var contact = document.contact; //Whole form
-var subject = document.contact.subject; //subject
-var emailTxtBox = document.contact.email; //Email
-var message = document.contact.message; //Message
+if(window.location.pathname == "/real_estate/contact.php"){
+  //Textboxes and regex for contact page
+  const contact = document.contact; 
+  const emailTxtBox = document.contact.email; 
+  const subject = document.contact.subject;
+  const message = document.contact.message; 
 
-//Sets the valid text inputs	
+  const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const regexSub = /^(?!\s*$).+/;
+  const regexMssg = /^(?!\s*$).+/;
 
-var regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  inputs.push(emailTxtBox, subject, message);
+  regex.push(regexEmail, regexSub, regexMssg);
+} else if(window.location.pathname == "/real_estate/newProperty.php"){
+  //Textboxes and regex for managing available properties
+  const uploads = document.uploads;
+  const image = document.uploads.image;
+  const adress = document.uploads.adress;
+  const price = document.uploads.price;
 
-//////////Prevent and enable form submission///////////////////
+  const regexImage = /^(?!\s*$).+/;
+  const regexAdress = /^(?!\s*$).+/;
+  const regexPrice = /^(?!\s*$).+/;
 
-//Prevents form submission
-function preventSubmit() {
-	contact.setAttribute("action", "");
-	contact.setAttribute("onsubmit", "return false;");
+  inputs.push(image, adress, price);
+  regex.push(regexImage, regexAdress, regexPrice);
 }
-
-//Enables form submission
-function enableSubmit() {
-	contact.setAttribute("action", "index.php");
-	contact.setAttribute("onsubmit", "return true;");
-}
+//// Put the following in the "assets" workspace ////
 
 //Displays loading message whn email is sending
 function loadMssg(){
-
+	let status = document.createElement("h4");
+	status.id="sendMssg";
+	document.getElementsByTagName("form")[0].appendChild(status);
 	if (document.readyState !== "loading") {
 		document.getElementById("sendMssg").innerHTML="Sending...";
 		} else{
@@ -39,27 +48,37 @@ function loadMssg(){
 }
 
 //////////Checks for errors upon submission///////////////////
-function submitForm () {
-	if (regexEmail.test(emailTxtBox.value) && subject.value !="" && message.value !="") {
-		loadMssg();
-		enableSubmit();
-	
-	} else if (!regexEmail.test(emailTxtBox.value)){
-		alert("Please enter a valid email address.");
-		emailTxtBox.focus();
-		emailTxtBox.select();
-		preventSubmit();
-	} else if (subject.value ==""){
-		alert("Please enter a subject.");
-		subject.focus();
-		subject.select();
-		preventSubmit();
-	}else if (message.value ==""){
-		alert("Please enter a message.");
-		message.focus();
-		message.select();
-		preventSubmit();
+function submitForm (form, refreshTo) {
+	function everyOne(txtValue){
+		for(let i = 0; i<inputs.length; i++){
+			if(regex[i].test(txtValue.value) == true){
+		  return regex[i].test(txtValue.value);
+			} else{
+				continue;
+			}
+		}
+	}
+
+	if(inputs.every(everyOne)==true){
+		 if(typeof regexEmail != undefined){
+			loadMssg();
+		}
+		form.setAttribute("action", refreshTo);
+		form.setAttribute("onsubmit", "return true;");
+	}else{
+		for(let i = 0; i<inputs.length; i++){
+			if(!regex[i].test(inputs[i].value)){
+		    alert("Please fill out a valid " +inputs[i].getAttribute("name")+".");
+			inputs[i].focus();
+			inputs[i].select();
+		    }
+	    }
+		form.setAttribute("action", "");
+	    form.setAttribute("onsubmit", "return false;");
 	}
 }
+
+
+
 
 
