@@ -1,35 +1,34 @@
+//Stores location of page
+var page = window.location.pathname;
+
 /////////////////Sets up the arrays with regex and textfields
 var inputs = [];
 var regex = [];
 
-if(window.location.pathname == "/real_estate/contact.php"){
-  //Textboxes and regex for contact page
-  const contact = document.contact; 
-  const emailTxtBox = document.contact.email; 
-  const subject = document.contact.subject;
-  const message = document.contact.message; 
 
-  const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  const regexSub = /^(?!\s*$).+/;
-  const regexMssg = /^(?!\s*$).+/;
+//Textboxes and regex for managing available properties
+var uploads = document.uploads;
+var editListing = document.editListing;
 
-  inputs.push(emailTxtBox, subject, message);
-  regex.push(regexEmail, regexSub, regexMssg);
-} else if(window.location.pathname == "/real_estate/newProperty.php"){
-  //Textboxes and regex for managing available properties
-  const uploads = document.uploads;
-  const image = document.uploads.image;
-  const adress = document.uploads.adress;
-  const price = document.uploads.price;
+function txtBoxes(form){
+	var image = form.image;
+	var adress = form.adress;
+	var price = form.price;
 
-  const regexImage = /^(?!\s*$).+/;
-  const regexAdress = /^(?!\s*$).+/;
-  const regexPrice = /^(?!\s*$).+/;
+	inputs.push(image, adress, price);
+	return inputs;
 
-  inputs.push(image, adress, price);
-  regex.push(regexImage, regexAdress, regexPrice);
 }
-//// Put the following in the "assets" workspace ////
+
+
+var regexImage = /^(?!\s*$).+/;
+var regexAdress = /^(?!\s*$).+/;
+var regexPrice = /^(?!\s*$).+/;
+
+
+
+regex.push(regexImage, regexAdress, regexPrice);
+
 
 //Displays loading message whn email is sending
 function loadMssg(){
@@ -49,6 +48,7 @@ function loadMssg(){
 
 //////////Checks for errors upon submission///////////////////
 function submitForm (form, refreshTo) {
+	txtBoxes(form);
 	function everyOne(txtValue){
 		for(let i = 0; i<inputs.length; i++){
 			if(regex[i].test(txtValue.value) == true){
@@ -75,7 +75,9 @@ function submitForm (form, refreshTo) {
 	    }
 		form.setAttribute("action", "");
 	    form.setAttribute("onsubmit", "return false;");
+		inputs = [];
 	}
+	
 }
 
 

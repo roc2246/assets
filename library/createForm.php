@@ -1,6 +1,6 @@
 <?php 
 
-function createForm($table, $method, $other_attributes){
+function createForm($table, $name, $method, $other_attributes, $formName, $refreshTo){
   global $connection;
   $sql = "SELECT * FROM $table";
   $result = mysqli_query($connection, $sql);
@@ -15,7 +15,7 @@ function createForm($table, $method, $other_attributes){
           array_push($fieldNames, $row['Field']);
           
       }
-      echo "<form name='uploads'  method='".$method."' autocomplete='off' $other_attributes>";
+      echo "<form name='".$name."'  method='".$method."' autocomplete='off' $other_attributes>";
       for($i = 1; $i<count($fieldNames); $i++){
         echo "<label>" . ucfirst($fieldNames[$i]) . "</label><br>";
         if($fieldNames[$i] == 'image'){
@@ -24,7 +24,7 @@ function createForm($table, $method, $other_attributes){
           echo "<input type='text' name='" .$fieldNames[$i] . "'><br><br>";
         }
       }
-      echo "<button type='submit' value='submit' name='submit'>submit</button>";
+      echo "<button type='submit' value='submit' name='submit' onclick='submitForm(". $formName. ", ". "\"".$refreshTo."\"" .")'>submit</button>";
       echo "</form>";
       } 
     }
