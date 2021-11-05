@@ -12,7 +12,7 @@ function uploadImage($folder){
     if(isset($_POST["submit"])) {
       $check = getimagesize($_FILES["image"]["tmp_name"]);
       if($check !== false) {
-        echo "<br><br>File is an image - " . $check["mime"] . ".<br><br>";
+       /*  echo "<br><br>File is an image - " . $check["mime"] . ".<br><br>"; */
         $uploadOk = 1;
       } else {
         echo "File is not an image.<br><br>";
@@ -39,7 +39,7 @@ function uploadImage($folder){
       // if everything is ok, try to upload file
       } else {
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-        echo "The file ". htmlspecialchars( basename( $_FILES["image"]["name"])). " has been uploaded.<br><br>";
+        /* echo "The file ". htmlspecialchars( basename( $_FILES["image"]["name"])). " has been uploaded.<br><br>"; */
       } else if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file) && isset($_POST['image'])){
         echo "Sorry, there was an error uploading your file.<br><br>";
       }
@@ -50,6 +50,15 @@ function checkTempLocation(){
     if (sys_get_temp_dir() == '/tmp'){
       echo "<h4>Sorry, image uploading is down for maintenance.</h4>";
     }
+  }
+
+  //Callback for createForm(), located in phpCRUD.php
+  function enableUpload(){
+    if(sys_get_temp_dir() != '/tmp'){
+      echo "<input type='file' name='image'><br><br>";
+       } else {
+      echo "<input type='file' name='image' disabled><br><br>";
+       }
   }
   
 ?>
