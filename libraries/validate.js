@@ -6,34 +6,38 @@ var inputs = [];
 var regex = [];
 
 
-//Textboxes and regex for managing available properties
-var uploads = document.uploads;
-var editListing = document.editListing;
+//For Assigning Form, Input, and Regex variables
+//CREATE LIBRARY FOR VARIABLES LATER
+var contact = document.contact;
 
 function txtBoxes(form){
-	var image = form.image;
-	var adress = form.adress;
-	var price = form.price;
+	var email = form.email;
+	var subject = form.subject;
+	var message = form.message;
 
-	inputs.push(image, adress, price);
+	inputs.push(email, subject, message);
 	return inputs;
 
 }
 
+var regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+var regexSubject = /^(?!\s*$).+/;
+var regexMessage = /^(?!\s*$).+/;
 
-var regexImage = /^(?!\s*$).+/;
-var regexAdress = /^(?!\s*$).+/;
-var regexPrice = /^(?!\s*$).+/;
+function regexAssign(){
+	
+	
+	regex.push(regexEmail, regexSubject, regexMessage);
+	return regex;
+}
 
-
-
-regex.push(regexImage, regexAdress, regexPrice);
 
 
 //Displays loading message whn email is sending
 function loadMssg(){
 	let status = document.createElement("h4");
 	status.id="sendMssg";
+	document.getElementById("sendMssg").style.marginTop = 15 + 'px';
 	document.getElementsByTagName("form")[0].appendChild(status);
 	if (document.readyState !== "loading") {
 		document.getElementById("sendMssg").innerHTML="Sending...";
@@ -48,21 +52,23 @@ function loadMssg(){
 
 //////////Checks for errors upon submission///////////////////
 function submitForm (form, refreshTo) {
+	var regexTest = [];
 	txtBoxes(form);
-	function everyOne(txtValue){
+	regexAssign();
+	function everyOne(){
 		for(let i = 0; i<inputs.length; i++){
-			if(regex[i].test(txtValue.value) == true){
-		  return regex[i].test(txtValue.value);
+			if(regex[i].test(inputs[i].value) == true){
+		  regexTest.push(regex[i].test(inputs[i].value));
 			} else{
 				continue;
 			}
 		}
 	}
 
-	if(inputs.every(everyOne)==true){
-		 if(typeof regexEmail !== 'undefined'){
-			loadMssg();
-		}
+    everyOne();
+
+	if(regexTest.length == inputs.length){
+		if(typeof regexEmail !== 'undefined') loadMssg();
 		form.setAttribute("action", refreshTo);
 		form.setAttribute("onsubmit", "return true;");
 	}else{
@@ -76,6 +82,7 @@ function submitForm (form, refreshTo) {
 		form.setAttribute("action", "");
 	    form.setAttribute("onsubmit", "return false;");
 		inputs = [];
+		regex = [];
 	}
 	
 }
