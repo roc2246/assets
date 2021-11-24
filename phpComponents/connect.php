@@ -31,17 +31,8 @@ function credentials($dbname)
         $username = 'childswe_eCommerce';
         $password = 'VJChkRFx';
         $database = 'childswe_'.$dbname;
-    } else {
-        $servername = 'localhost';
-        $username = 'roc09090';
-        $password = 'je5umyju5';
-        $database = 'roc09090_wordpress';
-    }
+    } 
 
-    return $servername;
-    return $username;
-    return $password;
-    return $database;
 }
 
 credentials($dbname);
