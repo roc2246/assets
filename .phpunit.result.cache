@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Warning":6,"ConnectTest::test_credentials":4,"SampleTest::testCredentials":5},"times":{"Warning":0.004,"ConnectTest::test_credentials":0.004,"SampleTest::testCredentials":0.003}}
