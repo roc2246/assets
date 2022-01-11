@@ -80,7 +80,6 @@ function getFieldValues($table)
       $values = implode("','", $values);
       return $values;
 }
-/////////////////////////////////////////////////////
 
 ////////////////////////CRUD Operations///////////////////////////////////
 //Create
@@ -215,13 +214,12 @@ function deleteRows($table, $redirect)
  * 
  * @param string $table            the name of the table 
  * @param string $name             the 'name' attribute of the form
- * @param string $method           the form's method (i.e; get, post, etc.)
  * @param string $other_attributes other attributes for the form
  * @param string $refreshTo        the name of the page to redirect to on submit
  * 
  * @return Confirmation message
  */
-function createForm($table, $name, $method, $other_attributes, $refreshTo)
+function createPostForm($table, $name, $other_attributes, $refreshTo)
 {
     global $connection;
     $sql = "SELECT * FROM $table";
@@ -237,7 +235,7 @@ function createForm($table, $name, $method, $other_attributes, $refreshTo)
                 array_push($fieldNames, $row['Field']);
             
             }
-            echo "<form name='".$name."'  method='".$method."' autocomplete='off' ";
+            echo "<form name='".$name."'  method='post' autocomplete='off' ";
             echo "$other_attributes>";
             for ($i = 1; $i<count($fieldNames); $i++) {
                 echo "<label>" . ucfirst($fieldNames[$i]) . "</label><br>";
@@ -254,6 +252,7 @@ function createForm($table, $name, $method, $other_attributes, $refreshTo)
         } 
     } else {
         echo "<h1>ERROR</h1>";
+        die("QUERY FAILED" . mysqli_error($connection));
     }
 }
 
